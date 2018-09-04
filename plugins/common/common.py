@@ -115,6 +115,13 @@ def coins(user, conn):
     msg = u"<@{}|{}> 有 {} 個金幣。".format(user['id'], user['name'], coins).encode('utf-8')
     return msg
 
+def sacrifice(user, channel_id):
+    channelname = slack.get_channelname(channel_id)
+    sacrifice_list = get_active_users(slack, channelname)
+    target = random.choice(sacrifice_list)
+    msg = u"@{} 在此獻上:fire: @{} :fire:為祭品──給我瞧仔細了！".format(user, target)
+    return msg
+
 def unary_command(cmd, channel_id, user, conn):
     global slack
     bot_icon = None
@@ -126,6 +133,8 @@ def unary_command(cmd, channel_id, user, conn):
         msg = freq(conn)
     elif cmd in ["!coins"]:
         msg = coins(user, conn)
+    elif cmd in ["!sacrifice"]:
+        msg = sacrifice(user['name'], channel_id)
     else:
         return
     slack.post_message(channel_id, msg, bot_icon)
@@ -177,13 +186,6 @@ def add_coins_all(target, coins, conn):
     msg = u"給所有人 {} coins！".encode('utf-8').format(coins)
     return msg
 
-def sacrifice(user, channel_id):
-    channelname = slack.get_channelname(channel_id)
-    sacrifice_list = get_active_users(slack, channelname)
-    target = random.choice(sacrifice_list)
-    msg = u"@{} 在此獻上:fire: @{} :fire:為祭品──給我瞧仔細了！".format(user, target)
-    return msg
-
 def binary_command(cmd, target, channel_id, user, conn):
     global slack
     bot_icon = None
@@ -199,8 +201,6 @@ def binary_command(cmd, target, channel_id, user, conn):
         msg = friend(user['name'], target)
     elif cmd in ["!yfriend"]:
         msg = yfriend(user['name'], target, conn)
-    elif cmd in ["!sacrifice"]:
-        msg = sacrifice(user['name'], channel_id)
     else:
         return
     slack.post_message(channel_id, msg, bot_icon)
