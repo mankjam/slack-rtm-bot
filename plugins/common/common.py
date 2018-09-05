@@ -12,7 +12,10 @@ friend_await = {}
 friend_sets = []
 simple_unary_commands = json.load(open('simple_unary_commands.json'))
 simple_binary_commands = json.load(open('simple_binary_commands.json'))
-channel_map = {"general": "C0J4UTXL0"}
+channel_map = {
+    "general": "C0J4UTXL0",
+    'bot-dev-test': 'C0JKD2HMM',
+}
 
 database = None
 ADMIN = ''
