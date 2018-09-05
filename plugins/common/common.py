@@ -117,9 +117,11 @@ def coins(user, conn):
 
 def sacrifice(user, channel_id):
     channelname = slack.get_channelname(channel_id)
-    sacrifice_list = get_active_users(slack, channelname)
+    sacrifice_list = get_active_users(channelname)
     target = random.choice(sacrifice_list)
-    msg = u"@{} 在此獻上:fire: @{} :fire:為祭品──給我瞧仔細了！".format(user, target)
+    r = slack.sc.api_call("users.info", user=target)
+    target_name = r["user"]["name"]
+    msg = u"@{} 在此獻上:fire: @{} :fire:為祭品──給我瞧仔細了！".format(user, target_name)
     return msg
 
 def unary_command(cmd, channel_id, user, conn):
